@@ -1,7 +1,6 @@
 package com.promineotech.classManagementApi.entity;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -13,7 +12,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.promineotech.classManagementApi.entity.Student;

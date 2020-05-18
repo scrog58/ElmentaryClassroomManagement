@@ -31,7 +31,7 @@ public class EmployeesController {
 		try{
 			return new ResponseEntity<Object>(service.login(employee), HttpStatus.OK);
 		} catch(Exception e) {
-			return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<Object>(e.getMessage(), HttpStatus.UNAUTHORIZED);
 		}
 	}
 	

@@ -3,6 +3,7 @@ package com.promineotech.classManagementApi.service;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 
@@ -34,12 +35,16 @@ private static final Logger logger = LogManager.getLogger(ParentServices.class);
 	}
 	
 	public Parent createParent(Parent parent) {
+		parent.setPassword(passwordHash(parent.getPassword()));
+		parent.setLevel(AccountLevel.PARENT);
 		return repo.save(parent);
 	}
 	
 	public Parent login(Parent parent) throws Exception {
 		Parent foundParent = repo.findByUsername(parent.getUsername());
-		if(foundParent != null && foundParent.getPassword().equals(parent.getPassword())) {
+		String password = parent.getPassword();
+		//equal is they are both string foundParent.getPassword().equals(parent.getPassword())
+		if(foundParent != null && BCrypt.checkpw(password, foundParent.getPassword())) {
 			return foundParent;
 		} else {
 			throw new Exception("Invalid username or password");
@@ -68,7 +73,7 @@ private static final Logger logger = LogManager.getLogger(ParentServices.class);
 		try {
 			Parent oldParent = repo.findOne(id);
 			oldParent.setUsername(parent.getUsername());
-			oldParent.setPassword(parent.getPassword());
+			oldParent.setPassword(passwordHash(parent.getPassword()));
 			return repo.save(oldParent);
 		} catch(Exception e) {
 			logger.error("Can't update parent id: " + id, e);
@@ -83,6 +88,15 @@ private static final Logger logger = LogManager.getLogger(ParentServices.class);
 			logger.error("Can't delete parent id: "+id,e);
 			throw new Exception("Unable to delete parent");
 		}
+	}
+	
+	private String passwordHash(String password) {
+		
+		String pass = password.toString();
+		String hash = BCrypt.hashpw(pass, BCrypt.gensalt());
+		
+		return hash;
+		
 	}
 
 }

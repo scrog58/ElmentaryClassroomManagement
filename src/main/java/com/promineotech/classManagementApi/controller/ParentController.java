@@ -1,7 +1,5 @@
 package com.promineotech.classManagementApi.controller;
 
-import java.util.Set;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,10 +10,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.promineotech.classManagementApi.entity.Parent;
-import com.promineotech.classManagementApi.entity.Student;
 
 import com.promineotech.classManagementApi.service.ParentServices;
-import com.promineotech.classManagementApi.service.StudentServices;
 
 
 
@@ -25,9 +21,6 @@ public class ParentController {
 	
 	@Autowired
 	private ParentServices service;
-	
-	@Autowired
-	private StudentServices studentService;
 	
 	@RequestMapping(value="/register", method = RequestMethod.POST)
 	public ResponseEntity<Object> register(@RequestBody Parent parent) {
@@ -40,7 +33,7 @@ public class ParentController {
 		try{
 			return new ResponseEntity<Object>(service.login(parent), HttpStatus.OK);
 		} catch(Exception e) {
-			return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<Object>(e.getMessage(), HttpStatus.UNAUTHORIZED);
 		}
 	}
 	

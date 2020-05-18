@@ -1,14 +1,17 @@
 package com.promineotech.classManagementApi.service;
 
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
+
+
 
 import com.promineotech.classManagementApi.entity.Employees;
 import com.promineotech.classManagementApi.repository.EmployeesRepository;
 import com.promineotech.classManagementApi.util.AccountLevel;
-
 
 
 @Service
@@ -34,12 +37,20 @@ private static final Logger logger = LogManager.getLogger(EmployeesServices.clas
 	}
 	
 	public Employees createEmployee(Employees employee) {
+		employee.setPassword(passwordHash(employee.getPassword()));
 		return repo.save(employee);
 	}
 	
 	public Employees login(Employees employee) throws Exception {
+		//AuthenticationService auth = new AuthenticationService();
+		
 		Employees foundEmp = repo.findByUsername(employee.getUsername());
-		if(foundEmp != null && foundEmp.getPassword().equals(employee.getPassword())) {
+		
+		String password = employee.getPassword();
+		//foundEmp != null && foundEmp.getPassword().equals(employee.getPassword())
+		if(foundEmp != null && BCrypt.checkpw(password, foundEmp.getPassword())) {
+			
+			//auth.setJwet(generateToken(foundEmp.getUsername()));
 			return foundEmp;
 		} else {
 			throw new Exception("Invalid username or password");
@@ -67,8 +78,8 @@ private static final Logger logger = LogManager.getLogger(EmployeesServices.clas
 	public Employees updateEmployeeUserName(Employees employee, Long id) throws Exception {
 		try {
 			Employees oldEmp = repo.findOne(id);
-			oldEmp.setUsername(oldEmp.getUsername());
-			oldEmp.setPassword(oldEmp.getPassword());
+			oldEmp.setUsername(employee.getUsername());
+			oldEmp.setPassword(passwordHash(employee.getPassword()));
 			return repo.save(oldEmp);
 		} catch(Exception e) {
 			logger.error("Can't update employee id: " + id, e);
@@ -84,5 +95,15 @@ private static final Logger logger = LogManager.getLogger(EmployeesServices.clas
 			throw new Exception("Unable to delete employee");
 		}
 	}
+	
+	private String passwordHash(String password) {
+		
+		String pass = password.toString();
+		String hash = BCrypt.hashpw(pass, BCrypt.gensalt());
+		
+		return hash;
+		
+	}
+	
 
 }

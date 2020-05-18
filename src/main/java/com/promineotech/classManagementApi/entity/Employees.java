@@ -1,5 +1,6 @@
 package com.promineotech.classManagementApi.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -84,6 +85,7 @@ public class Employees {
 		this.zip = zip;
 	}
 	
+	@Column(unique=true)
 	public String getEmail() {
 		return email;
 	}
@@ -100,6 +102,7 @@ public class Employees {
 		this.level = level;
 	}
 	
+	@Column(unique=true)
 	public String getUsername() {
 		return username;
 	}
