@@ -16,7 +16,7 @@ import javax.persistence.ManyToOne;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.promineotech.classManagementApi.entity.Student;
 import com.promineotech.classManagementApi.entity.Employees;
-import com.promineotech.classManagementApi.entity.Class;
+import com.promineotech.classManagementApi.entity.Classs;
 
 @Entity
 public class AssignmentsGrades {
@@ -27,7 +27,7 @@ public class AssignmentsGrades {
 	private double grade;
 	
 	@JsonIgnore 
-	private Class classroom;
+	private Classs classroom;
 	
 	@JsonIgnore 
 	private Employees employee;
@@ -75,11 +75,11 @@ public class AssignmentsGrades {
 	
 	@ManyToOne
 	@JoinColumn(name = "classId")
-	public Class getClassroom() {
+	public Classs getClassroom() {
 		return classroom;
 	}
 
-	public void setClassroom(Class classroom) {
+	public void setClassroom(Classs classroom) {
 		this.classroom = classroom;
 	}
 

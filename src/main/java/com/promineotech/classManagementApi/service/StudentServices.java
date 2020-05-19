@@ -14,9 +14,12 @@ import org.springframework.stereotype.Service;
 import com.promineotech.classManagementApi.entity.AssignmentsGrades;
 import com.promineotech.classManagementApi.entity.Parent;
 import com.promineotech.classManagementApi.entity.Student;
+import com.promineotech.classManagementApi.entity.Classs;
+
 import com.promineotech.classManagementApi.repository.AssignmentsRepository;
 import com.promineotech.classManagementApi.repository.ParentRepository;
 import com.promineotech.classManagementApi.repository.StudentRepository;
+import com.promineotech.classManagementApi.repository.ClassRepository;
 
 @Service
 public class StudentServices {
@@ -31,6 +34,7 @@ private ParentRepository parentRepo;
 
 @Autowired
 private AssignmentsRepository assignmentRepo;
+
 	
 public Student getStudentById(Long id) throws Exception {
 	try {
@@ -47,11 +51,23 @@ public Student getStudentById(Long id) throws Exception {
 public Iterable<Student> getStudents() {
 	return repo.findAll();
 }
+
+//can this work
+public Set<Student> getAllStudentsClassIsNull() {
+	Iterable<Student> students = repo.findAll();
+	Set<Student> getStudent = new HashSet<Student>();
+	for(Student foundStudent : students) {
+		if(foundStudent.getClasss() == null) {
+			getStudent.add(foundStudent);
+		}
+	}
+	return getStudent;
+}
 	
 public Student newStudent(Student student, Long parentId) throws Exception {
 		try {
 			
-			Parent parent = parentRepo.findOne(parentId);
+			Parent parent = parentRepo.findOne(parentId); 
 			if(parent == null) {
 				throw new Exception("Can't find parent");
 			}
@@ -67,6 +83,7 @@ public Student newStudent(Student student, Long parentId) throws Exception {
 		}
 		
 }
+
 	
 public Student updateStudent(Student student, Long id) throws Exception {
 	try {

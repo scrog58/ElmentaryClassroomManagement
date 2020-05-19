@@ -36,6 +36,10 @@ private static final Logger logger = LogManager.getLogger(EmployeesServices.clas
 		return repo.findAll();
 	}
 	
+	public Iterable<Employees> getListEmployees() {
+		return repo.findAll();
+	}
+	
 	public Employees createEmployee(Employees employee) {
 		employee.setPassword(passwordHash(employee.getPassword()));
 		return repo.save(employee);

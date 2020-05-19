@@ -1,6 +1,8 @@
 package com.promineotech.classManagementApi.controller;
 
 
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.promineotech.classManagementApi.entity.Class;
+import com.promineotech.classManagementApi.entity.Classs;
 
 
 import com.promineotech.classManagementApi.service.ClassServices;
@@ -44,16 +46,25 @@ public class ClassController {
 		}
 		
 		@RequestMapping(method = RequestMethod.POST)
-		public ResponseEntity<Object> newClass(@RequestBody Class getClass, @PathVariable Long id) {
+		public ResponseEntity<Object> newClass(@RequestBody Classs getClass) {
 			try {
-				return new ResponseEntity<Object>(service.newClass(getClass, id), HttpStatus.OK);
+				return new ResponseEntity<Object>(service.newClass(getClass), HttpStatus.OK);
+			} catch(Exception e) {
+				return new ResponseEntity<Object>(e.getMessage(), HttpStatus.NOT_FOUND);
+			}
+		}
+		
+		@RequestMapping(value="/{id}/addstudents",method = RequestMethod.POST)
+		public ResponseEntity<Object> addStudentsToClass(@RequestBody Set<Long> studentIds, @PathVariable Long id) {
+			try {
+				return new ResponseEntity<Object>(service.submitStudentsIntoClass(studentIds, id), HttpStatus.OK);
 			} catch(Exception e) {
 				return new ResponseEntity<Object>(e.getMessage(), HttpStatus.NOT_FOUND);
 			}
 		}
 		
 		@RequestMapping(value="/{id}/update", method = RequestMethod.PUT)
-		public ResponseEntity<Object> updateClass(@RequestBody Class getClass, @PathVariable Long id) {
+		public ResponseEntity<Object> updateClass(@RequestBody Classs getClass, @PathVariable Long id) {
 			try {
 				return new ResponseEntity<Object>(service.updateClass(getClass, id), HttpStatus.OK);
 			} catch(Exception e) {

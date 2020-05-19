@@ -13,7 +13,7 @@ import com.promineotech.classManagementApi.entity.AssignmentsGrades;
 import com.promineotech.classManagementApi.entity.Employees;
 import com.promineotech.classManagementApi.entity.Parent;
 import com.promineotech.classManagementApi.entity.Student;
-import com.promineotech.classManagementApi.entity.Class;
+import com.promineotech.classManagementApi.entity.Classs;
 
 import com.promineotech.classManagementApi.repository.AssignmentsRepository;
 import com.promineotech.classManagementApi.repository.ClassRepository;

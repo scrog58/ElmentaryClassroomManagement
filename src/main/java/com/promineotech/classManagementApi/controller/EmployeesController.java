@@ -1,6 +1,8 @@
 package com.promineotech.classManagementApi.controller;
 
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.promineotech.classManagementApi.entity.Employees;
+import com.promineotech.classManagementApi.service.AuthenticationService;
 import com.promineotech.classManagementApi.service.EmployeesServices;
 
 @RestController
@@ -19,6 +22,9 @@ public class EmployeesController {
 
 	@Autowired
 	private EmployeesServices service;
+	
+	@Autowired
+	private AuthenticationService auth;
 	
 	@RequestMapping(value="/register", method = RequestMethod.POST)
 	public ResponseEntity<Object> register(@RequestBody Employees employee) {
@@ -45,8 +51,24 @@ public class EmployeesController {
 	}
 	
 	@RequestMapping(method=RequestMethod.GET)
-	public ResponseEntity<Object> getParents() {
+	public ResponseEntity<Object> getEmployees() {
 		return new ResponseEntity<Object>(service.getEmployees(), HttpStatus.OK);
+	}
+	
+	@RequestMapping(method=RequestMethod.POST)
+	public ResponseEntity<Object> getListOfAllEmployees(@PathVariable Long employeeId, HttpServletRequest request) {
+		try {
+			if(auth.isCorrectAccountLevel(auth.getToken(request), employeeId)) {
+				return new ResponseEntity<Object>(service.getListEmployees(), HttpStatus.OK);
+			} else {
+				return new ResponseEntity<Object>("Unauthorized request", HttpStatus.UNAUTHORIZED);
+			}
+			
+			
+		} catch(Exception e) {
+			return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+		
 	}
 	
 	@RequestMapping(value="{id}/update", method = RequestMethod.PUT)

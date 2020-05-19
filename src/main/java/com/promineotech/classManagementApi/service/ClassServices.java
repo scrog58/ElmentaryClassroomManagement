@@ -1,15 +1,19 @@
 package com.promineotech.classManagementApi.service;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.promineotech.classManagementApi.entity.Class;
-
+import com.promineotech.classManagementApi.entity.Classs;
+import com.promineotech.classManagementApi.entity.Student;
 import com.promineotech.classManagementApi.repository.ClassRepository;
+import com.promineotech.classManagementApi.repository.ParentRepository;
+import com.promineotech.classManagementApi.repository.StudentRepository;
 
 	@Service
 	public class ClassServices {
@@ -18,8 +22,14 @@ import com.promineotech.classManagementApi.repository.ClassRepository;
 	
 	@Autowired
 	private ClassRepository repo;
+	
+	@Autowired
+	private StudentRepository studentRepo;
+	
+	@Autowired
+	private ParentRepository parentRepo;
 		
-	public Class getClassById(Long id) throws Exception {
+	public Classs getClassById(Long id) throws Exception {
 		try {
 			
 			return repo.findOne(id);
@@ -31,19 +41,38 @@ import com.promineotech.classManagementApi.repository.ClassRepository;
 		}
 	}
 		
-	public Iterable<Class> getClasses() {
+	public Iterable<Classs> getClasses() {
 		return repo.findAll();
 	}
 		
-	public Class newClass(Class getClass, Long id) throws Exception {
+	public Classs newClass(Classs getClass) throws Exception {
 		getClass.setDateClassCreated(LocalDate.now());
 		return repo.save(getClass);
 	}
+	
 		
-	public Class updateClass(Class getClass, Long id) throws Exception {
+	public Classs submitStudentsIntoClass(Set<Long> studentId, Long classId) throws Exception {
+		Classs getClassId = repo.findOne(classId);
+		
+		try {
+			if(getClassId == null) {
+				throw new Exception("Can't find class");
+			}
+			
+			Classs classroom = initializeNewClassStudents(studentId,getClassId.getId());
+			return repo.save(classroom);
+			
+		} catch(Exception e) {
+			logger.error("Exception occurred while tryiing to add student", e);
+			throw new Exception("Unable to add students into classroom ");
+		}
+		
+	}
+	
+	public Classs updateClass(Classs getClass, Long id) throws Exception {
 		try {
 			
-			Class oldClass = repo.findOne(id);
+			Classs oldClass = repo.findOne(id);
 			oldClass.setClassName(getClass.getClassName());
 			oldClass.setClassDescription(getClass.getClassDescription());
 			
@@ -64,6 +93,43 @@ import com.promineotech.classManagementApi.repository.ClassRepository;
 			throw new Exception("Unable to delete student");
 		}
 		
-	}					
+	}
+	
+	private Classs initializeNewClassStudents(Set<Long> studentIds, Long classId) {
+		Classs classroom = repo.findOne(classId);
+		classroom.setStudents(convertStudentsToSet(classId,classroom.getGradeLevel(), studentRepo.findAll(studentIds)));
+		addClassesToStudents(classroom, classroom.getGradeLevel());
+		return classroom;
+	}
+	
+	//add student to the correct grade level
+	private void addClassesToStudents(Classs classroom, String gradeLevel) {
+		Set<Student> students = classroom.getStudents();
+		for(Student newstudent : students) {
+			if(classroom.getGradeLevel().equals(newstudent.getGradeLevel())) {
+					newstudent.getClasss().add(classroom);			
+			} 
+		}
+	}
+	
+	private Set<Student> convertStudentsToSet(Long classId, String gradeLevel, Iterable<Student> iterable) {
+		Classs classroom = repo.findOne(classId);
+		Set<Student> set = new HashSet<Student>();
+		int count = 0;
+		
+			for(Student student : iterable) {
+				if(classroom.getGradeLevel().equals(student.getGradeLevel())) {
+					if(count < classroom.getMaxNumberofStudents()) {
+						count ++;
+							set.add(student);
+						
+					}
+					
+				} 
+			}
+		
+		return set;
+		
+	}
 
 }

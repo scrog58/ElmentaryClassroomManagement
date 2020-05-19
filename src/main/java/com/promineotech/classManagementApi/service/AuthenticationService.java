@@ -1,9 +1,10 @@
 package com.promineotech.classManagementApi.service;
 
 import java.security.Key;
-import java.util.Base64;
 
 import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.stereotype.Service;
 
 import com.promineotech.classManagementApi.entity.Employees;
 import com.promineotech.classManagementApi.util.AccountLevel;
@@ -12,6 +13,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 
+@Service
 public class AuthenticationService {
 	Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 		

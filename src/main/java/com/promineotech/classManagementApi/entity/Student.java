@@ -22,6 +22,7 @@ public class Student {
 	private String lastName;
 	private String birthDate;
 	private int age;
+	private Set<Classs> getClasss;
 	private String gradeLevel;
 	private String letterGrade;
 	
@@ -82,6 +83,17 @@ public class Student {
 		this.gradeLevel = gradeLevel;
 	}
 	
+	@ManyToMany(mappedBy = "students")
+	public Set<Classs> getClasss() {
+		return getClasss;
+	}
+
+
+	public void setClasss(Set<Classs> getClasss) {
+		this.getClasss = getClasss;
+	}
+
+
 	public String getLetterGrade() {
 		return letterGrade;
 	}

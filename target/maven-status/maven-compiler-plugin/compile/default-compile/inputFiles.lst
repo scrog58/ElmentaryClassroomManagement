@@ -3,6 +3,7 @@
 /Users/angelina/eclipse-workspace/classManagementApi/src/main/java/com/promineotech/classManagementApi/service/EmployeesServices.java
 /Users/angelina/eclipse-workspace/classManagementApi/src/main/java/com/promineotech/classManagementApi/service/ClassServices.java
 /Users/angelina/eclipse-workspace/classManagementApi/src/main/java/com/promineotech/classManagementApi/service/AuthenticationService.java
+/Users/angelina/eclipse-workspace/classManagementApi/src/main/java/com/promineotech/classManagementApi/entity/Classs.java
 /Users/angelina/eclipse-workspace/classManagementApi/src/main/java/com/promineotech/classManagementApi/repository/ParentRepository.java
 /Users/angelina/eclipse-workspace/classManagementApi/src/main/java/com/promineotech/classManagementApi/controller/ClassController.java
 /Users/angelina/eclipse-workspace/classManagementApi/src/main/java/com/promineotech/classManagementApi/repository/StudentRepository.java
@@ -21,4 +22,3 @@
 /Users/angelina/eclipse-workspace/classManagementApi/src/main/java/com/promineotech/classManagementApi/service/StudentServices.java
 /Users/angelina/eclipse-workspace/classManagementApi/src/main/java/com/promineotech/classManagementApi/controller/ParentController.java
 /Users/angelina/eclipse-workspace/classManagementApi/src/main/java/com/promineotech/classManagementApi/entity/Parent.java
-/Users/angelina/eclipse-workspace/classManagementApi/src/main/java/com/promineotech/classManagementApi/entity/Class.java
