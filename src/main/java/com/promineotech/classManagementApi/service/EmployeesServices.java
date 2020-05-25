@@ -7,10 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
-
+import com.promineotech.classManagementApi.service.AuthenticationService;
 
 import com.promineotech.classManagementApi.entity.Employees;
+
 import com.promineotech.classManagementApi.repository.EmployeesRepository;
+
 import com.promineotech.classManagementApi.util.AccountLevel;
 
 
@@ -21,6 +23,8 @@ private static final Logger logger = LogManager.getLogger(EmployeesServices.clas
 	
 	@Autowired
 	private EmployeesRepository repo;
+	
+	private AuthenticationService auth = new AuthenticationService();	
 	
 	public Employees getEmployeesById(Long id) throws Exception {
 		try {
@@ -41,7 +45,7 @@ private static final Logger logger = LogManager.getLogger(EmployeesServices.clas
 	}
 	
 	public Employees createEmployee(Employees employee) {
-		employee.setPassword(passwordHash(employee.getPassword()));
+		employee.setPassword(auth.passwordHash(employee.getPassword()));
 		return repo.save(employee);
 	}
 	
@@ -83,7 +87,7 @@ private static final Logger logger = LogManager.getLogger(EmployeesServices.clas
 		try {
 			Employees oldEmp = repo.findOne(id);
 			oldEmp.setUsername(employee.getUsername());
-			oldEmp.setPassword(passwordHash(employee.getPassword()));
+			oldEmp.setPassword(auth.passwordHash(employee.getPassword()));
 			return repo.save(oldEmp);
 		} catch(Exception e) {
 			logger.error("Can't update employee id: " + id, e);
@@ -98,15 +102,6 @@ private static final Logger logger = LogManager.getLogger(EmployeesServices.clas
 			logger.error("Can't delete employee id: "+id,e);
 			throw new Exception("Unable to delete employee");
 		}
-	}
-	
-	private String passwordHash(String password) {
-		
-		String pass = password.toString();
-		String hash = BCrypt.hashpw(pass, BCrypt.gensalt());
-		
-		return hash;
-		
 	}
 	
 

@@ -77,56 +77,7 @@ public class ParentController {
 		}catch(Exception e) {
 			return new ResponseEntity<Object>(e.getMessage(), HttpStatus.NOT_FOUND);
 		}
-	}
-	
-////Student Side
-//	@RequestMapping(value="/{id}/student/{id}", method = RequestMethod.GET)
-//	public ResponseEntity<Object> getStudent(@PathVariable Long parentid, @PathVariable Long id) {
-//		try {
-//			return new ResponseEntity<Object>(studentService.getStudentById(service.getParentById(parentid),id), HttpStatus.OK);
-//		} catch(Exception e) {
-//			return new ResponseEntity<Object>(e.getMessage(), HttpStatus.NOT_FOUND);
-//		}
-//	}
-//	
-//	@RequestMapping(value="/{id}/student", method = RequestMethod.GET)
-//	public ResponseEntity<Object> getStudents(@PathVariable Long parentid) {
-//		try {
-//			return new ResponseEntity<Object>(studentService.getStudents(service.getParentById(parentid)), HttpStatus.OK);
-//		} catch(Exception e) {
-//			return new ResponseEntity<Object>(e.getMessage(), HttpStatus.NOT_FOUND);
-//		}
-//	}
-//	
-//	@RequestMapping(method = RequestMethod.POST)
-//	public ResponseEntity<Object> newStudent(@RequestBody Set<Long> assignmentId, @PathVariable Long parentId) {
-//		try {
-//			return new ResponseEntity<Object>(studentService.newStudent(assignmentId, parentId), HttpStatus.OK);
-//		} catch(Exception e) {
-//			return new ResponseEntity<Object>(e.getMessage(), HttpStatus.NOT_FOUND);
-//		}
-//	}
-//	
-//	@RequestMapping(value="/{id}/student/{id}/update", method = RequestMethod.PUT)
-//	public ResponseEntity<Object> updateStudent(@PathVariable Long parentId, @RequestBody Student student, @PathVariable Long id) {
-//		try {
-//			return new ResponseEntity<Object>(studentService.updateStudent(parentId, student, id), HttpStatus.OK);
-//		} catch(Exception e) {
-//			return new ResponseEntity<Object>(e.getMessage(), HttpStatus.NOT_FOUND);
-//		}
-//	}
-//	
-//	@RequestMapping(value="/{id}/student/{id}", method = RequestMethod.DELETE)
-//	public ResponseEntity<Object> updateStudent(@PathVariable Long parentid, @PathVariable Long id) {
-//		try {
-//			studentService.deleteStudent(service.getParentById(parentid), id);
-//			return new ResponseEntity<Object>("Succefull delete student.", HttpStatus.OK);
-//		} catch(Exception e) {
-//			return new ResponseEntity<Object>(e.getMessage(), HttpStatus.NOT_FOUND);
-//		}
-//	}
-//	
-	
+	}	
 	
 
 }

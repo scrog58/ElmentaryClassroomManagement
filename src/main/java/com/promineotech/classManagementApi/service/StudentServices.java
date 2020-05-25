@@ -52,17 +52,6 @@ public Iterable<Student> getStudents() {
 	return repo.findAll();
 }
 
-//can this work
-public Set<Student> getAllStudentsClassIsNull() {
-	Iterable<Student> students = repo.findAll();
-	Set<Student> getStudent = new HashSet<Student>();
-	for(Student foundStudent : students) {
-		if(foundStudent.getClasss() == null) {
-			getStudent.add(foundStudent);
-		}
-	}
-	return getStudent;
-}
 	
 public Student newStudent(Student student, Long parentId) throws Exception {
 		try {
@@ -96,7 +85,7 @@ public Student updateStudent(Student student, Long id) throws Exception {
 		oldStudent.setBirthDate(student.getBirthDate());
 		oldStudent.setAge(calculateAge(student.getBirthDate()));
 		oldStudent.setGradeLevel(student.getGradeLevel());
-		oldStudent.setLetterGrade(caculateStudentGrade(student.getAssignments(),id));
+		//oldStudent.setLetterGrade(caculateStudentGrade(student.getAssignments(),id));
 		
 		return repo.save(oldStudent);
 		
@@ -126,7 +115,7 @@ public Student addingNewStudents(Set<Long> assignmentId, Parent parent) {
 	student.setBirthDate(student.getBirthDate());
 	student.setAge(calculateAge(student.getBirthDate()));
 	student.setGradeLevel(student.getGradeLevel());
-	student.setLetterGrade(caculateStudentGrade(student.getAssignments(),student.getId()));
+	//student.setLetterGrade(caculateStudentGrade(student.getAssignments(),student.getId()));
 	
 	addStudentsToAssignmentsGrade(student);
 	return student;
@@ -135,44 +124,44 @@ public Student addingNewStudents(Set<Long> assignmentId, Parent parent) {
 public void addStudentsToAssignmentsGrade(Student student) {
 	Set<AssignmentsGrades> assignments = student.getAssignments();
 	for(AssignmentsGrades assignment :  assignments) {
-		assignment.getStudent().add(student);
+		assignment.getStudents().add(student);
 	}
 }
 
-private String caculateStudentGrade(Set<AssignmentsGrades> getGrades, Long studentId) {
-	Student student = new Student();
-	Set<Double> grades = new HashSet<Double>();
-	int average = 0;
-	String Letter = "";
-	
-	//make sure you are pulling grade based on student id
-	if(studentId.equals(student.getId())){
-		for(AssignmentsGrades findgrade : getGrades) {
-		 grades.add(findgrade.getGrade());
-		}
-	}
-	
-	for(Double num : grades) {
-		average += num;
-	}
-	
-	average = average/grades.size();
-	
-	if(average >= 90) {
-		Letter = "A";
-	} else if(average >= 80) {
-		Letter = "B";
-	} else if(average >= 70) {
-		Letter = "C";
-	} else if(average >= 60 ) {
-		Letter = "D";
-	} else {
-		Letter = "F";
-	}
-	
-	return Letter;
-
-}	
+//private String caculateStudentGrade(Set<AssignmentsGrades> getGrades, Long studentId) {
+//	Student student = new Student();
+//	Set<Double> grades = new HashSet<Double>();
+//	int average = 0;
+//	String Letter = "";
+//	
+//	//make sure you are pulling grade based on student id
+//	if(studentId.equals(student.getId())){
+//		for(AssignmentsGrades findgrade : getGrades) {
+//		 grades.add(findgrade.getGrade());
+//		}
+//	}
+//	
+//	for(Double num : grades) {
+//		average += num;
+//	}
+//	
+//	average = average/grades.size();
+//	
+//	if(average >= 90) {
+//		Letter = "A";
+//	} else if(average >= 80) {
+//		Letter = "B";
+//	} else if(average >= 70) {
+//		Letter = "C";
+//	} else if(average >= 60 ) {
+//		Letter = "D";
+//	} else {
+//		Letter = "F";
+//	}
+//	
+//	return Letter;
+//
+//}	
 	
 private int calculateAge(String date) {
 	int age = 0;

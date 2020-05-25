@@ -5,4 +5,5 @@ public enum AccountLevel {
 		TEACHER
 		, STAFF
 		, PARENT
+		, ADMIN
 }

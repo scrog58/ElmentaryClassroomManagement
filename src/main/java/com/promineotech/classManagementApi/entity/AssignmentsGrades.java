@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.promineotech.classManagementApi.entity.Student;
@@ -24,19 +25,16 @@ public class AssignmentsGrades {
 	private Long id;
 	private String description;
 	private LocalDate date;
-	private double grade;
+	private double totalGradeAmount;
 	
 	@JsonIgnore 
 	private Classs classroom;
 	
 	@JsonIgnore 
-	private Employees employee;
-	
-	@JsonIgnore 
 	private Parent parent;
 	
 	@JsonIgnore 
-	private Set<Student> student;
+	private Set<Student> students;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -63,18 +61,17 @@ public class AssignmentsGrades {
 	public void setDate(LocalDate date) {
 		this.date = date;
 	}
-
-	public Double getGrade() {
-		return grade;
+	
+	public double getTotalGradeAmount() {
+		return totalGradeAmount;
 	}
 
-	public void setGrade(Double grade) {
-		this.grade = grade;
+	public void setTotalGradeAmount(double totalGradeAmount) {
+		this.totalGradeAmount = totalGradeAmount;
 	}
-	
-	
+
 	@ManyToOne
-	@JoinColumn(name = "classId")
+	@JoinColumn(name = "classs")
 	public Classs getClassroom() {
 		return classroom;
 	}
@@ -82,38 +79,19 @@ public class AssignmentsGrades {
 	public void setClassroom(Classs classroom) {
 		this.classroom = classroom;
 	}
-
-	@ManyToOne
-	@JoinColumn(name = "employeeId")
-	public Employees getTeacher() {
-		return employee;
-	}
-	
-	public void setTeacher(Employees employee) {
-		this.employee = employee;
-	}
 	
 	
-	@ManyToOne
-	@JoinColumn(name = "parentId")
-	public Parent getParent() {
-		return parent;
-	}
-
-	public void setParent(Parent parent) {
-		this.parent = parent;
-	}
 
 	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinTable(name = "assignmentgrades_student"
-			,joinColumns = @JoinColumn(name = "studentId", referencedColumnName = "id")
-			,inverseJoinColumns = @JoinColumn(name = "assignmentId", referencedColumnName = "id"))
-	public Set<Student> getStudent() {
-		return student;
+	@JoinTable(name = "assignment_student"
+			,joinColumns = @JoinColumn(name = "assignmentid", referencedColumnName = "id")
+			,inverseJoinColumns = @JoinColumn(name = "studentid", referencedColumnName = "id"))
+	public Set<Student> getStudents() {
+		return students;
 	}
 
-	public void setStudent(Set<Student> student) {
-		this.student = student;
+	public void setStudents(Set<Student> students) {
+		this.students = students;
 	}
 
 }

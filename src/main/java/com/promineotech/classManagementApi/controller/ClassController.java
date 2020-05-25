@@ -45,6 +45,16 @@ public class ClassController {
 			}
 		}
 		
+		@RequestMapping(value="/unassignedstudents",method = RequestMethod.GET)
+		public ResponseEntity<Object> getStudentsLinkedToClass() {
+			try {
+				return new ResponseEntity<Object>(service.getAllStudentsClassIsNull(), HttpStatus.OK);
+				
+			} catch(Exception e) {
+				return new ResponseEntity<Object>(e.getMessage(), HttpStatus.NOT_FOUND);
+			}
+		}
+		
 		@RequestMapping(method = RequestMethod.POST)
 		public ResponseEntity<Object> newClass(@RequestBody Classs getClass) {
 			try {

@@ -29,7 +29,7 @@ public class Student {
 	@JsonIgnore
 	private Parent parent;
 	
-	@JsonIgnore
+	
 	private Set<AssignmentsGrades> assignments;
 
 	@Id
@@ -112,7 +112,7 @@ public class Student {
 		this.parent = parent;
 	}
 
-	@ManyToMany(mappedBy = "student")
+	@ManyToMany(mappedBy = "students")
 	public Set<AssignmentsGrades> getAssignments() {
 		return assignments;
 	}

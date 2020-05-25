@@ -4,6 +4,7 @@ import java.security.Key;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import com.promineotech.classManagementApi.entity.Employees;
@@ -56,6 +57,15 @@ public class AuthenticationService {
 		return jwt;
 		
 	}
+	
+	public String passwordHash(String password) {
+		String pass = password.toString();
+		String hash = BCrypt.hashpw(pass, BCrypt.gensalt());
+		
+		return hash;
+	}
+	
+	
 
 
 }

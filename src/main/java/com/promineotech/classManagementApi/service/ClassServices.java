@@ -50,6 +50,32 @@ import com.promineotech.classManagementApi.repository.StudentRepository;
 		return repo.save(getClass);
 	}
 	
+//	//list students that are not assigned to a class
+//	public Iterable<Student> getAllStudentsClassIsNull() {
+//		Iterable<Student> studentIds = studentRepo.findAll(); 
+//		Set<Student> list = new HashSet<Student>();
+//		for(Student getId : studentIds) {
+//			if(getId.getClasss().isEmpty()) {
+//				list.add(getId);
+//			}
+//		}
+//		
+//		return list;
+//	}
+	
+	//list students that need to be assigned in a class
+	public Set<String> getAllStudentsClassIsNull() {
+		Iterable<Student> students = studentRepo.findAll(); 
+		Set<String> list = new HashSet<String>();
+		for(Student student : students) {
+			if(student.getClasss().isEmpty()) {
+				list.add("StudentId: "+student.getId()+", Student Name: "+student.getFirstName()+ " "+student.getLastName()+", Student Grade Level: "+ student.getGradeLevel());
+			}
+		}
+		
+		return list;
+	}
+	
 		
 	public Classs submitStudentsIntoClass(Set<Long> studentId, Long classId) throws Exception {
 		Classs getClassId = repo.findOne(classId);
