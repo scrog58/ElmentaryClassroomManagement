@@ -39,17 +39,7 @@ public class StudentController {
 				return new ResponseEntity<Object>(e.getMessage(), HttpStatus.NOT_FOUND);
 			}
 		}
-		
-//		@RequestMapping(value="/studentmissingclass",method = RequestMethod.GET)
-//		public ResponseEntity<Object> getListOfStudentsClassNull() {
-//			try {
-//				return new ResponseEntity<Object>(service.getAllStudentsClassIsNull(), HttpStatus.OK);
-//				
-//			} catch(Exception e) {
-//				return new ResponseEntity<Object>(e.getMessage(), HttpStatus.NOT_FOUND);
-//			}
-//		}
-//		
+			
 		@RequestMapping(method = RequestMethod.POST)
 		public ResponseEntity<Object> newStudent(@RequestBody Student student,@PathVariable Long parentId) {
 			try {

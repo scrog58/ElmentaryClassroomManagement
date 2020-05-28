@@ -1,10 +1,15 @@
 package com.promineotech.classManagementApi.entity;
 
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 
 import com.promineotech.classManagementApi.util.AccountLevel;
 
@@ -20,6 +25,7 @@ public class Employees {
 	private String state;
 	private String zip;
 	private String email;
+	private Set<Classs> listClassroom;
 	
 	private AccountLevel level;
 	
@@ -94,6 +100,15 @@ public class Employees {
 		this.email = email;
 	}
 	
+	@ManyToMany(mappedBy = "teacherName")
+	public Set<Classs> getListClassroom() {
+		return listClassroom;
+	}
+
+	public void setListClassroom(Set<Classs> listClassroom) {
+		this.listClassroom = listClassroom;
+	}
+
 	public AccountLevel getAccountLevel() {
 		return level;
 	}

@@ -50,6 +50,7 @@ public class AssignmentController {
 			return new ResponseEntity<Object>(e.getMessage(), HttpStatus.NOT_FOUND);
 		}
 	}
+
 	
 	//add list of students to class assignment
 	@RequestMapping(value="/{id}/addStudents", method = RequestMethod.PUT)
@@ -61,6 +62,7 @@ public class AssignmentController {
 			return new ResponseEntity<Object>(e.getMessage(), HttpStatus.NOT_FOUND);
 		}
 	}
+	
 	
 	//add the grade to the student assignment
 	@RequestMapping(value="/{id}/student/{studentId}", method = RequestMethod.PUT)

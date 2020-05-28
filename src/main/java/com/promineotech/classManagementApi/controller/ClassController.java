@@ -64,6 +64,15 @@ public class ClassController {
 			}
 		}
 		
+		@RequestMapping(value="/{id}/addteachers",method = RequestMethod.POST)
+		public ResponseEntity<Object> addTeachersToClass(@RequestBody Set<Long> employeeIds, @PathVariable Long id) {
+			try {
+				return new ResponseEntity<Object>(service.submitEmployeesIntoClass(employeeIds, id), HttpStatus.OK);
+			} catch(Exception e) {
+				return new ResponseEntity<Object>(e.getMessage(), HttpStatus.NOT_FOUND);
+			}
+		}
+		
 		@RequestMapping(value="/{id}/addstudents",method = RequestMethod.POST)
 		public ResponseEntity<Object> addStudentsToClass(@RequestBody Set<Long> studentIds, @PathVariable Long id) {
 			try {

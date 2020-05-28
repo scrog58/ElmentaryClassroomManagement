@@ -1,6 +1,9 @@
 package com.promineotech.classManagementApi.service;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
@@ -53,7 +56,7 @@ public class AssignmentGradeStudentsService {
 			
 			//why doesn't this work
 			if(checkAssignmentPoints > checkTotalAssignmentPoints) {
-				checkAssignmentPoints = assignment.getTotalGradeAmount();
+				checkAssignmentPoints = assignment.getTotalGradeAmount(); // checkTotalAssigmentPoints
 			} else if(checkAssignmentPoints < 0.00) {
 				checkAssignmentPoints = 0.00;
 			}
@@ -62,7 +65,7 @@ public class AssignmentGradeStudentsService {
 			grades.setAssignmentid(assignment.getId());
 			grades.setStudentid(student.getId());
 			grades.setAssignmentGrade(checkAssignmentPoints);
-			grades.setAssignmentTotalGradePoint(assignment.getTotalGradeAmount());
+			grades.setAssignmentTotalGradePoint(assignment.getTotalGradeAmount()); 
 			student.setLetterGrade(caculateStudentGrade(classId.getId(), assignment.getId(), student.getId()));
 			
 			
@@ -82,7 +85,18 @@ public class AssignmentGradeStudentsService {
 			AssignmentGradeStudents oldGrade = repo.findOne(gradeId);
 			Student student = studentRepo.findOne(oldGrade.getStudentid());
 			
-			oldGrade.setAssignmentGrade(grades.getAssignmentGrade());
+			Double checkAssignmentPoints = grades.getAssignmentGrade();
+			Double checkTotalAssignmentPoints = oldGrade.getAssignmentTotalGradePoint();
+			
+			
+			if(checkAssignmentPoints > checkTotalAssignmentPoints) {
+				checkAssignmentPoints = checkTotalAssignmentPoints; // checkTotalAssigmentPoints
+			} else if(checkAssignmentPoints < 0.00) {
+				checkAssignmentPoints = 0.00;
+			}
+			
+			oldGrade.setAssignmentGrade(checkAssignmentPoints);
+			
 			student.setLetterGrade(caculateStudentGrade(oldGrade.getClassid(), oldGrade.getAssignmentid(), oldGrade.getStudentid()));	
 			return repo.save(oldGrade);
 							

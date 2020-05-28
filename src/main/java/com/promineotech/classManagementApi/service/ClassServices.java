@@ -10,8 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.promineotech.classManagementApi.entity.Classs;
+import com.promineotech.classManagementApi.entity.Employees;
 import com.promineotech.classManagementApi.entity.Student;
 import com.promineotech.classManagementApi.repository.ClassRepository;
+import com.promineotech.classManagementApi.repository.EmployeesRepository;
 import com.promineotech.classManagementApi.repository.ParentRepository;
 import com.promineotech.classManagementApi.repository.StudentRepository;
 
@@ -28,6 +30,10 @@ import com.promineotech.classManagementApi.repository.StudentRepository;
 	
 	@Autowired
 	private ParentRepository parentRepo;
+	
+	@Autowired
+	private EmployeesRepository employeeRepo;
+	
 		
 	public Classs getClassById(Long id) throws Exception {
 		try {
@@ -63,6 +69,7 @@ import com.promineotech.classManagementApi.repository.StudentRepository;
 //		return list;
 //	}
 	
+//Student	
 	//list students that need to be assigned in a class
 	public Set<String> getAllStudentsClassIsNull() {
 		Iterable<Student> students = studentRepo.findAll(); 
@@ -95,6 +102,27 @@ import com.promineotech.classManagementApi.repository.StudentRepository;
 		
 	}
 	
+//Employees	
+	
+	public Classs submitEmployeesIntoClass(Set<Long> employeeIds, Long classId) throws Exception {
+		Classs getClassId = repo.findOne(classId);
+		
+		try {
+			if(getClassId == null) {
+				throw new Exception("Can't find class");
+			}
+			
+			Classs classroom = initializeNewClassTeachers(employeeIds,getClassId.getId());
+			return repo.save(classroom);
+			
+		} catch(Exception e) {
+			logger.error("Exception occurred while tryiing to add student", e);
+			throw new Exception("Unable to add teacher into classroom ");
+		}
+		
+	}
+	
+//////	Class level	
 	public Classs updateClass(Classs getClass, Long id) throws Exception {
 		try {
 			
@@ -121,6 +149,7 @@ import com.promineotech.classManagementApi.repository.StudentRepository;
 		
 	}
 	
+//Student
 	private Classs initializeNewClassStudents(Set<Long> studentIds, Long classId) {
 		Classs classroom = repo.findOne(classId);
 		classroom.setStudents(convertStudentsToSet(classId,classroom.getGradeLevel(), studentRepo.findAll(studentIds)));
@@ -154,6 +183,32 @@ import com.promineotech.classManagementApi.repository.StudentRepository;
 				} 
 			}
 		
+		return set;
+		
+	}
+	
+//Employee
+	private Classs initializeNewClassTeachers(Set<Long> employeeId, Long classId) {
+		Classs classroom = repo.findOne(classId);
+		classroom.setTeacherName(convertEmployeesToSet(employeeRepo.findAll(employeeId)));
+		addClassesToEmployee(classroom);
+		return classroom;
+	}
+	
+	//add student to the correct grade level
+	private void addClassesToEmployee(Classs classroom) {
+		Set<Employees> employees = classroom.getTeacherName();
+		for(Employees newEmployee : employees) {
+			newEmployee.getListClassroom().add(classroom);			
+		}
+	}
+	
+	private Set<Employees> convertEmployeesToSet(Iterable<Employees> iterable) {
+		Set<Employees> set = new HashSet<Employees>();
+			for(Employees employee : iterable) {
+					set.add(employee);
+					
+			}
 		return set;
 		
 	}

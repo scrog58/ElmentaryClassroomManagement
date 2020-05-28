@@ -25,7 +25,10 @@ public class Classs {
 	private Long id;
 	private String className;
 	private String classDescription;
+	
+	@JsonIgnore
 	private Set<Employees> teacherName;
+	
 	private String gradeLevel;
 	private int maxNumberofStudents;
 	
