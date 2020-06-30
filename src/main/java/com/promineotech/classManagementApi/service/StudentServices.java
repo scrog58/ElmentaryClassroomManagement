@@ -64,6 +64,7 @@ public Student newStudent(Student student, Long parentId) throws Exception {
 			int age = calculateAge(student.getBirthDate());
 			student.setAge(age);
 			student.setParent(parent);
+			
 			return repo.save(student);
 			
 		} catch(Exception e) {
@@ -79,7 +80,6 @@ public Student updateStudent(Student student, Long id) throws Exception {
 		
 		Student oldStudent = repo.findOne(id);
 		
-		oldStudent.setParent(student.getParent());
 		oldStudent.setFirstName(student.getFirstName());
 		oldStudent.setLastName(student.getLastName());
 		oldStudent.setBirthDate(student.getBirthDate());
@@ -118,6 +118,7 @@ public Student addingNewStudents(Set<Long> assignmentId, Parent parent) {
 	//student.setLetterGrade(caculateStudentGrade(student.getAssignments(),student.getId()));
 	
 	addStudentsToAssignmentsGrade(student);
+	addStudentsToParent(student);
 	return student;
 }
 
@@ -127,6 +128,12 @@ public void addStudentsToAssignmentsGrade(Student student) {
 		assignment.getStudents().add(student);
 	}
 }
+
+public void addStudentsToParent(Student student) {
+	Long parentId = student.getParent().getId();
+	Parent parent = parentRepo.findOne(parentId);
+		parent.getStudents().add(student);
+	}
 
 //private String caculateStudentGrade(Set<AssignmentsGrades> getGrades, Long studentId) {
 //	Student student = new Student();

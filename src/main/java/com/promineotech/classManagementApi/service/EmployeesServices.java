@@ -46,6 +46,9 @@ private static final Logger logger = LogManager.getLogger(EmployeesServices.clas
 	
 	public Employees createEmployee(Employees employee) {
 		employee.setPassword(auth.passwordHash(employee.getPassword()));
+		if(employee.getAccountLevel() == null) {
+			employee.setAccountLevel(AccountLevel.TEACHER);
+		} 
 		return repo.save(employee);
 	}
 	
@@ -75,7 +78,12 @@ private static final Logger logger = LogManager.getLogger(EmployeesServices.clas
 			oldEmp.setState(employee.getState());
 			oldEmp.setZip(employee.getZip());
 			oldEmp.setEmail(employee.getEmail());
-			oldEmp.setAccountLevel(AccountLevel.TEACHER);
+			if(employee.getAccountLevel() == null) {
+				oldEmp.setAccountLevel(AccountLevel.TEACHER);
+			} else {
+				oldEmp.setAccountLevel(employee.getAccountLevel());
+			}
+			
 			return repo.save(oldEmp);
 		} catch(Exception e) {
 			logger.error("Can't update employee id: " + id, e);
